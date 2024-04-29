@@ -1,25 +1,22 @@
-name: Dependency Submission
-
-on:
-  push:
-    branches: [ 'master' ]
-  schedule:
-    - cron: '24 3 * * *'
-
-permissions:
-  contents: write
-
 jobs:
-
   dependency-submission:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
-    - name: Checkout sources
+    - continue-on-error: true
+      name: Checkout sources
       uses: actions/checkout@v4
-    - name: Set Java version
+    - continue-on-error: true
+      name: Set Java version
       uses: actions/setup-java@v4
       with:
-        distribution: 'temurin'
+        distribution: temurin
         java-version: '21'
-    - name: Generate and submit dependency graph
+    - continue-on-error: true
+      name: Generate and submit dependency graph
       uses: gradle/actions/dependency-submission@v3
+name: Dependency Submission
+on:
+  repository_dispatch:
+    types: trigger-ga___dependency-submission.yml
+permissions:
+  contents: write
